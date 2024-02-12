@@ -10,7 +10,7 @@ KZNTree is an inventory management Django application with RESTful API.
 
 ## Video Explanation
 
-[![Your Video](https://img.youtube.com/vi/zlDP3ZM8mnA/0.jpg)](https://youtu.be/zlDP3ZM8mnA?si=8w437ir6BBs1kPZL)
+[![Your Video](https://img.youtube.com/vi/zlDP3ZM8mnA/1.jpg)](https://youtu.be/zlDP3ZM8mnA?si=8w437ir6BBs1kPZL)
 
 
 ## Setup and Run

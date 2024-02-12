@@ -1,0 +1,133 @@
+<!-- templates/build.html -->
+{% extends 'base.html' %}
+
+{% block title %}Build Dashboard{% endblock %}
+
+{% block content %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <a href="#home">Home</a><br>
+            <a href="{% url 'home' %}">Items</a><br>
+            <a href="#stock">Stock</a><br>
+            <a href="{% url 'build_dashboard' %}">Build</a><br>
+            <a href="#customers">Customers</a><br>
+            <a href="#sales_order">Sales Order</a><br>
+            <a href="#suppliers">Suppliers</a><br>
+            <a href="#manufacturers">Manufacturers</a><br>
+            <a href="#purchase_orders">Purchase Orders</a><br>
+            <a href="#reports">Reports</a><br>
+        </div>
+        <div class="header">
+            <div class="user-details">
+                {% if user.is_authenticated %}
+                    <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+                {% endif %}
+            </div>
+            <h2>Build Dashboard</h2>
+        </div>
+        <div class="content">
+            <div class="status-boxes">
+                <div class="status-box pending">
+                    <h3>Pending Builds</h3>
+                    <p>{{ pending_builds }}</p>
+                </div>
+        
+                <div class="status-box completed">
+                    <h3>Completed Builds</h3>
+                    <p>{{ completed_builds }}</p>
+                </div>
+        
+                <div class="status-box cancelled">
+                    <h3>Cancelled Builds</h3>
+                    <p>{{ cancelled_builds }}</p>
+                </div>
+        
+                <div class="status-box most-built">
+                    <h3>Most Built</h3>
+                    <p>{{ most_built }}</p>
+                </div>
+        
+                <div class="status-box least-built">
+                    <h3>Least Built</h3>
+                    <p>{{ least_built }}</p>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div class="additional-functionalities">
+                    <p><a href="{% url 'add_build' %}">New Build</a></p>
+                </div>
+
+            
+                <!-- Search form -->
+                <form method="get" id="search-form">
+                    <input type="text" name="q" placeholder="Search items" value="{{ request.GET.q }}" oninput="submitSearchForm()">
+                    <button id="search-button">Search</button>
+                </form>
+
+                <!-- Filter form -->
+                <form method="get" id="filter-form">
+                    <select name="filter_by">
+                        <option value="" {% if not request.GET.filter_by %}selected{% endif %}>Filter By</option>
+                        <option value="linked_sale_order_group" {% if request.GET.filter_by == 'linked_sale_order_group' %}selected{% endif %}>Linked Sale Order Group</option>
+                        <option value="creation_group_date" {% if request.GET.filter_by == 'creation_group_date' %}selected{% endif %}>Creation Date</option>
+                        <option value="completion_group_date" {% if request.GET.filter_by == 'completion_group_date' %}selected{% endif %}>Completion Date</option>
+                        <!-- Add more filter options as needed -->
+                    </select>
+            
+                    <button type="submit">Apply Filters</button>
+                </form>
+
+                <!-- Sort form -->
+                <form method="get" id="sort-form">
+                    <select name="sort_by">
+                        <option value="references_asc" {% if request.GET.sort_by == 'references_asc' %}selected{% endif %}>References (Ascending)</option>
+                        <option value="references_desc" {% if request.GET.sort_by == 'references_desc' %}selected{% endif %}>References (Descending)</option>
+                        <option value="quantity_asc" {% if request.GET.sort_by == 'quantity_asc' %}selected{% endif %}>Quantity (Ascending)</option>
+                        <option value="quantity_desc" {% if request.GET.sort_by == 'quantity_desc' %}selected{% endif %}>Quantity (Descending)</option>
+                        <option value="cost_asc" {% if request.GET.sort_by == 'cost_asc' %}selected{% endif %}>Cost (Ascending)</option>
+                        <option value="cost_desc" {% if request.GET.sort_by == 'cost_desc' %}selected{% endif %}>Cost (Descending)</option>
+                        <!-- Add more sorting options as needed -->
+                    </select>
+            
+                    <button type="submit">Apply Sort</button>
+                </form>
+
+                
+
+            </div>
+            <div class="table-container">
+                <!-- Your Build Dashboard content goes here -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>References</th>
+                            <th>Item Group</th>
+                            <th>Quantity</th>
+                            <th>Cost</th>
+                            <th>Linked Sale Order Group</th>
+                            <th>Creation Group Date</th>
+                            <th>Completion Group Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through your Build Dashboard data and populate the table -->
+                        {% for build_entry in builds %}
+                            <tr>
+                                <td><a href="{% url 'build_detail' build_entry.id %}">{{ build_entry.references }}</a></td>
+                                <td>{{ build_entry.item_group }}</td>
+                                <td>{{ build_entry.quantity }}</td>
+                                <td>{{ build_entry.cost }}</td>
+                                <td>{{ build_entry.linked_sale_order_group }}</td>
+                                <td>{{ build_entry.creation_group_date }}</td>
+                                <td>{{ build_entry.completion_group_date }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

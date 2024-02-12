@@ -1,0 +1,55 @@
+<!-- build_detail.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Build Detail{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <a href="#home">Home</a><br>
+            <a href="{% url 'home' %}">Items</a><br>
+            <a href="#stock">Stock</a><br>
+            <a href="{% url 'build_dashboard' %}">Build</a><br>
+            <a href="#customers">Customers</a><br>
+            <a href="#sales_order">Sales Order</a><br>
+            <a href="#suppliers">Suppliers</a><br>
+            <a href="#manufacturers">Manufacturers</a><br>
+            <a href="#purchase_orders">Purchase Orders</a><br>
+            <a href="#reports">Reports</a><br>
+        </div>
+        <div class="content">
+        <div class="header">
+            <div class="user-details">
+                {% if user.is_authenticated %}
+                    <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+                {% endif %}
+            </div>
+            <h2>Build Dashboard</h2>
+        </div>
+        
+        
+            <p>Status: {% if build.completion_group_date %}Completed{% else %}Pending{% endif %}</p>
+
+            <form method="post" ">
+                <!-- {% csrf_token %} -->
+                <button type="submit" name="action" value="">Complete</button>
+                <button type="submit" name="action" value="">Cancel</button>
+                <button type="submit" name="action" value="">Cancel + Delete</button>
+            </form>
+            <div class="main-content">
+                <h2>{{ build.reference }}</h2>
+                <p>Item Group: {{ build.item_group }}</p>
+                <p>Quantity: {{ build.quantity }}</p>
+                <p>Cost: {{ build.cost }}</p>
+                <p>Linked Sale Order Group: {{ build.linked_sale_order_group }}</p>
+                <p>Creation Date: {{ build.creation_group_date }}</p>
+                <p>Completion Date: {{ build.completion_group_date }}</p>
+                <!-- Add more details as needed -->
+
+                <!-- Button to return to build dashboard -->
+                <a href="{% url 'build_dashboard' %}" class="return-button">Return to Build Dashboard</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!-- myapp/templates/registrations/login.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'login' %}" class="form-group">
+        {% csrf_token %}
+        <label for="id_username">Username:</label>
+        <input type="text" name="username" id="id_username" required>
+        <br>
+        <label for="id_password">Password:</label>
+        <input type="password" name="password" id="id_password" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'register' %}" class="link">Register here</a>.</p>
+
+    <!-- Display success or error messages with fade-out effect -->
+    {% if messages %}
+        {% for message in messages %}
+            <p class="{% if message.tags == 'success' %}success-message{% elif message.tags == 'error' %}error-message{% endif %} message">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <script>
+        // Remove the 'message' class after a delay
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                var messages = document.getElementsByClassName('message');
+                for (var i = 0; i < messages.length; i++) {
+                    messages[i].classList.remove('message');
+                }
+            }, 2000); // Adjust the delay in milliseconds
+        });
+    </script>
+{% endblock %}

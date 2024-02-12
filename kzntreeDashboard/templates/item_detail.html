@@ -1,0 +1,43 @@
+<!-- item_detail.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Item Detail{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <a href="#home">Home</a><br>
+            <a href="{% url 'home' %}">Items</a><br>
+            <a href="#stock">Stock</a><br>
+            <a href="{% url 'build_dashboard' %}">Build</a><br>
+            <a href="#customers">Customers</a><br>
+            <a href="#sales_order">Sales Order</a><br>
+            <a href="#suppliers">Suppliers</a><br>
+            <a href="#manufacturers">Manufacturers</a><br>
+            <a href="#purchase_orders">Purchase Orders</a><br>
+            <a href="#reports">Reports</a><br>
+        </div>
+        <div class="content">
+            <div class="header">
+                <div class="user-details">
+                    {% if user.is_authenticated %}
+                        <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+                    {% endif %}
+                </div>
+                <h2>Item Dashboard</h2>
+            </div>
+            <div class="main-content">
+                <h2>{{ item.name }} - {{ item.sku }}</h2>
+                <p>Category: {{ item.category }}</p>
+                <p>Tags: {{ item.tags }}</p>
+                <p>In Stock: {{ item.in_stock }}</p>
+                <p>Available Stock: {{ item.available_stock }}</p>
+                <!-- Add more details as needed -->
+
+                <!-- Button to return to inventory dashboard -->
+                <a href="{% url 'home' %}" class="return-button">Return to Inventory Dashboard</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+<!-- templates/add_build.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Add New Build{% endblock %}
+
+{% block content %}
+    <h2>Add New Build</h2>
+    <form method="post" action="{% url 'add_build' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Build</button>
+    </form>
+{% endblock %}

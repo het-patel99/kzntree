@@ -1,0 +1,141 @@
+<!-- templates/registrations/home.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Item Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <a href="#home">Home</a><br>
+            <a href="{% url 'home' %}">Items</a><br>
+            <a href="#stock">Stock</a><br>
+            <a href="{% url 'build_dashboard' %}">Build</a><br>
+            <a href="#customers">Customers</a><br>
+            <a href="#sales_order">Sales Order</a><br>
+            <a href="#suppliers">Suppliers</a><br>
+            <a href="#manufacturers">Manufacturers</a><br>
+            <a href="#purchase_orders">Purchase Orders</a><br>
+            <a href="#reports">Reports</a><br>
+        </div>
+        <div class="content">
+            <div class="header">
+                <div class="user-details">
+                    {% if user.is_authenticated %}
+                        <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+                    {% endif %}
+                </div>
+                <h2>Item Dashboard</h2>
+            </div>
+            <div class="toolbar">
+                <div class="additional-functionalities">
+                    <p><a href="{% url 'add_item' %}">Add new item</a></p>
+                    <p><a href="{% url 'add_category' %}">Add new category</a></p>
+                </div>
+
+            
+                <!-- Search form -->
+                <form method="get" id="search-form">
+                    <input type="text" name="q" placeholder="Search items" value="{{ request.GET.q }}" oninput="submitSearchForm()">
+                    <button id="search-button">Search</button>
+                </form>
+
+                <!-- Filter form -->
+                <form method="get" id="filter-form">
+                    <select name="filter_by">
+                        <option value="" {% if not request.GET.filter_by %}selected{% endif %}>Filter By</option>
+                        <option value="tags" {% if request.GET.filter_by == 'tags' %}selected{% endif %}>Tags</option>
+                        <option value="category" {% if request.GET.filter_by == 'category' %}selected{% endif %}>Category</option>
+                    </select>
+                
+                    <button type="submit">Apply Filters</button>
+                </form>
+
+                <!-- Sort form -->
+                <form method="get" id="sort-form">
+                    <select name="sort_by">
+                        <option value="sku_asc" {% if request.GET.sort_by == 'sku_asc' %}selected{% endif %}>SKU (Ascending)</option>
+                        <option value="sku_desc" {% if request.GET.sort_by == 'sku_desc' %}selected{% endif %}>SKU (Descending)</option>
+                        <option value="name_asc" {% if request.GET.sort_by == 'name_asc' %}selected{% endif %}>Name (Ascending)</option>
+                        <option value="name_desc" {% if request.GET.sort_by == 'name_desc' %}selected{% endif %}>Name (Descending)</option>
+                        <option value="in_stock_asc" {% if request.GET.sort_by == 'in_stock_asc' %}selected{% endif %}>In Stock (Ascending)</option>
+                        <option value="in_stock_desc" {% if request.GET.sort_by == 'in_stock_desc' %}selected{% endif %}>In Stock (Descending)</option>
+                        <option value="available_stock_asc" {% if request.GET.sort_by == 'available_stock_asc' %}selected{% endif %}>Available Stock (Ascending)</option>
+                        <option value="available_stock_desc" {% if request.GET.sort_by == 'available_stock_desc' %}selected{% endif %}>Available Stock (Descending)</option>
+                        <!-- Add more sorting options as needed -->
+                    </select>
+
+                    <button type="submit">Apply Sort</button>
+                </form>
+                <div class="totals">
+                    <p>Total Categories: {{ total_categories }}</p>
+                    <p>Total Items: {{ total_items }}</p>
+                </div>
+
+            </div>
+            <div class="table-container">
+                <!-- Display inventory items with details -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Tags</th>
+                            <th>In Stock</th>
+                            <th>Available Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td>{{ item.sku }}</td>
+                                <td><a href="{% url 'item_detail' item.id %}">{{ item.name }}</a></td>
+                                <td>{{ item.category }}</td>
+                                <td>{{ item.tags }}</td>
+                                <td>
+                                    {% if item.in_stock_status == 'H' %}
+                                        <span style="color: green; font-size: 20px;">&#11044;</span> 
+                                    {% else %}
+                                        <span style="color: red; font-size: 20px;">&#11044;</span> 
+                                    {% endif %}
+                                    {{ item.in_stock }}</td>
+                                <td>
+                                    {% if item.available_stock_status == 'H' %}
+                                        <span style="color: green; font-size: 20px;">&#11044;</span> 
+                                    {% else %}
+                                        <span style="color: red; font-size: 20px;">&#11044;</span> 
+                                    {% endif %}
+                                    {{ item.available_stock }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>  
+
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#search-button').on('click', function () {
+                updateSearchResults();
+            });
+
+            function updateSearchResults() {
+                var searchQuery = $('#search-input').val();
+                // Make an AJAX request to update the search results
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url "home" %}',
+                    data: { search: searchQuery },
+                    success: function (data) {
+                        // Update the table content with the new data
+                        $('#table-body').html(data);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

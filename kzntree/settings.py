@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 ]
 AUTH_USER_MODEL = 'kzntreeDashboard.UserProfile'
 
-# Add 'django_redis.cache.RedisCache' to the CACHES setting
+# Add 'django.core.cache.backends.locmem.LocMemCache' to the CACHES setting
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',

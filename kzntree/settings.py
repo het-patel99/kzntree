@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'kzntree.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kznTree',
+        'NAME': 'kzntree',
         'USER': 'admin',
         'PASSWORD': 'root123',
         'HOST': 'localhost',

@@ -32,7 +32,6 @@ def user_login(request):
 
     return render(request, 'registrations/login.html')
 
-@csrf_protect
 def user_register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -47,27 +46,23 @@ def user_register(request):
 
     return render(request, 'registrations/register.html', {'form': form})
 
-@csrf_protect
 def user_logout(request):
     logout(request)
     messages.success(request, 'Logged out successfully.')
     return redirect('login')
 
-@csrf_protect
 @api_view(['GET'])
 def home_api(request):
     items = InventoryItem.objects.all()
     serializer = InventoryItemSerializer(items, many=True)
     return Response(serializer.data)
 
-@csrf_protect
 @api_view(['GET'])
 def build_dashboard_api(request):
     builds = BuildDashboard.objects.all()
     serializer = BuildDashboardSerializer(builds, many=True)
     return Response(serializer.data)
 
-@csrf_protect
 @cache_page(CACHE_TIMEOUT)
 @login_required(login_url='login')  # Ensure users are logged in to access the home page
 def home(request):
@@ -120,7 +115,7 @@ def home(request):
 
     return render(request, 'home.html', context)
 
-@csrf_protect
+
 @login_required(login_url='login')
 def add_item(request):
     if request.method == 'POST':
@@ -132,7 +127,6 @@ def add_item(request):
         form = ItemForm()
     return render(request, 'add_item.html', {'form': form})
 
-@csrf_protect
 @login_required(login_url='login')
 def add_category(request):
     if request.method == 'POST':
@@ -144,7 +138,6 @@ def add_category(request):
         form = CategoryForm()
     return render(request, 'add_category.html', {'form': form})
 
-@csrf_protect
 @login_required(login_url='login')
 def item_detail(request, item_id):
     item = get_object_or_404(InventoryItem, id=item_id)
@@ -156,7 +149,6 @@ def build_detail(request, build_id):
 
     return render(request, 'build_detail.html', {'build': build})
 
-@csrf_protect
 @cache_page(CACHE_TIMEOUT)
 @login_required(login_url='login')
 def build_dashboard(request):
@@ -206,7 +198,6 @@ def build_dashboard(request):
 
     return render(request, 'build.html', context)
 
-@csrf_protect
 @login_required(login_url='login')
 def add_build(request):
     if request.method == 'POST':

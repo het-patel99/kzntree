@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'kzntreeDashboard',
     'rest_framework',
     'drf_yasg',
+    'corsheaders'
 ]
 AUTH_USER_MODEL = 'kzntreeDashboard.UserProfile'
 
@@ -56,10 +57,11 @@ CACHES = {
 CACHE_TIMEOUT = 300  # Adjust as needed
 CSRF_COOKIE_SECURE = True
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

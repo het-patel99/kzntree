@@ -4,8 +4,7 @@
 {% block title %}Build Dashboard{% endblock %}
 
 {% block content %}
-{% load static %}
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="dashboard-container">
         <div class="sidebar">
             <a href="#home">Home</a><br>
@@ -19,42 +18,44 @@
             <a href="#purchase_orders">Purchase Orders</a><br>
             <a href="#reports">Reports</a><br>
         </div>
-        <div class="header">
-            <div class="user-details">
-                {% if user.is_authenticated %}
-                    <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
-                {% endif %}
-            </div>
-            <h2>Build Dashboard</h2>
-        </div>
         <div class="content">
-            <div class="status-boxes">
-                <div class="status-box pending">
-                    <h3>Pending Builds</h3>
-                    <p>{{ pending_builds }}</p>
+            <div class="header">
+                <div class="user-details">
+                    {% if user.is_authenticated %}
+                        <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+                    {% endif %}
                 </div>
-        
-                <div class="status-box completed">
-                    <h3>Completed Builds</h3>
-                    <p>{{ completed_builds }}</p>
-                </div>
-        
-                <div class="status-box cancelled">
-                    <h3>Cancelled Builds</h3>
-                    <p>{{ cancelled_builds }}</p>
-                </div>
-        
-                <div class="status-box most-built">
-                    <h3>Most Built</h3>
-                    <p>{{ most_built }}</p>
-                </div>
-        
-                <div class="status-box least-built">
-                    <h3>Least Built</h3>
-                    <p>{{ least_built }}</p>
-                </div>
+                <h2>Build Dashboard</h2>
             </div>
             <div class="toolbar">
+
+                <div class="status-boxes">
+                    <div class="status-box pending">
+                        <h3>Pending Builds</h3>
+                        <p>{{ pending_builds }}</p>
+                    </div>
+            
+                    <div class="status-box completed">
+                        <h3>Completed Builds</h3>
+                        <p>{{ completed_builds }}</p>
+                    </div>
+            
+                    <div class="status-box cancelled">
+                        <h3>Cancelled Builds</h3>
+                        <p>{{ cancelled_builds }}</p>
+                    </div>
+            
+                    <div class="status-box most-built">
+                        <h3>Most Built</h3>
+                        <p>{{ most_built }}</p>
+                    </div>
+            
+                    <div class="status-box least-built">
+                        <h3>Least Built</h3>
+                        <p>{{ least_built }}</p>
+                    </div>
+                </div>
+                
                 <div class="additional-functionalities">
                     <p><a href="{% url 'add_build' %}">New Build</a></p>
                 </div>
@@ -129,5 +130,27 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#search-button').on('click', function () {
+                updateSearchResults();
+            });
+
+            function updateSearchResults() {
+                var searchQuery = $('#search-input').val();
+                // Make an AJAX request to update the search results
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url "build_dashboard" %}',
+                    data: { search: searchQuery },
+                    success: function (data) {
+                        // Update the table content with the new data
+                        $('#table-body').html(data);
+                    }
+                });
+            }
+        });
+    </script>
     
 {% endblock %}

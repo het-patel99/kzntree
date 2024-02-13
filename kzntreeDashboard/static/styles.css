@@ -18,6 +18,7 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    display: flex;
 }
 
 .form-group {
@@ -139,44 +140,31 @@ th {
         opacity: 0;
     }
 }
-.sidebar {
-    float: left;
-    width: 20%;
-    padding: 15px;
-}
 
 .content {
-    float: left;
     width: 80%;
     padding: 15px;
+    height: 100%;
+    margin-left:15%;
+    position: relative;
+    overflow-x: auto;
+    top : 0;
+    border-left: 15%;
 }
 
 .totals {
     margin-top: 20px;
 }
 
-@media screen and (max-width: 900px) {
-    .sidebar, .content {
-        width: 100%; /* Make both sidebar and content take up full width */
-        float: none;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .sidebar, .content {
-        padding: 10px; /* Adjust padding for smaller screens */
-    }
-}
-
 .sidebar {
     height: 100%;
-    width: 160px;
+    width: 15%;
     position: fixed;
     z-index: 1;
     top: 0;
     left: 0;
     background-color: #111;
-    overflow-x: hidden;
+    overflow-x: auto;
     padding-top: 16px;
   }
   
@@ -197,10 +185,6 @@ th {
     padding: 0px 10px;
   }
   
-  @media screen and (max-height: 450px) {
-    .sidebar {padding-top: 15px;}
-    .sidebar a {font-size: 18px;}
-  }
 
   .toolbar {
     display: flex;

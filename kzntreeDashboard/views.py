@@ -151,8 +151,14 @@ def build_detail(request, build_id):
 @login_required(login_url='login')
 def build_dashboard(request):
     builds = BuildDashboard.objects.all()
-
+    query = request.GET.get('q')
     # Filter builds
+    if query:
+        builds = builds.filter(
+            Q(references__icontains=query) |
+            Q(item_group__icontains=query) |
+            Q(linked_sale_order_group__icontains=query)
+        )
     filter_by = request.GET.get('filter_by')
     if filter_by:
         if filter_by == 'linked_sale_order_group':

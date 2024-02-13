@@ -19,14 +19,14 @@
             <a href="#reports">Reports</a><br>
         </div>
         <div class="content">
-        <div class="header">
-            <div class="user-details">
-                {% if user.is_authenticated %}
-                    <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
-                {% endif %}
+            <div class="header">
+                <div class="user-details">
+                    {% if user.is_authenticated %}
+                        <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+                    {% endif %}
+                </div>
+                <h2>Build Dashboard</h2>
             </div>
-            <h2>Build Dashboard</h2>
-        </div>
         
         
             <p>Status: {% if build.completion_group_date %}Completed{% else %}Pending{% endif %}</p>

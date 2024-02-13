@@ -54,7 +54,7 @@ CACHES = {
 
 # Set the cache timeout (in seconds) for your API responses
 CACHE_TIMEOUT = 300  # Adjust as needed
-
+CSRF_COOKIE_SECURE = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
